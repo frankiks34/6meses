@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6 Meses - Nuestro Universo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500;1,600&family=Dancing+Script:wght@600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+
+        :root{--p:0;--bg:#070913;--red:#e03a52;--gold:#f0c987;--tx:#f5ede4;--dim:#b3a9b8;--ln:rgba(240,201,135,.28)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:Lora,serif;background:radial-gradient(ellipse at 50% 0,#1d1536,transparent 60%),var(--bg);color:var(--tx);overflow-x:hidden}
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+.s{position:absolute;background:#fff;border-radius:50%;animation:tw 4s infinite alternate}@keyframes tw{from{opacity:.1}to{opacity:.85}}
+.dawn{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:calc(var(--p)*var(--p)*1.15);background:radial-gradient(ellipse at 50% 108%,rgba(255,170,110,.8),rgba(190,70,110,.4) 42%,transparent 75%)}
+
+/* EFECTO DE 3 HILOS */
+#threads {
+    position: fixed;
+    left: 10px;
+    top: 0;
+    z-index: 6;
+    height: calc(var(--p)*100vh);
+    display: none;
+    gap: 6px; /* Separación entre los hilos */
+}
+body.on #threads { display: flex; }
+.th {
+    position: relative;
+    width: calc(2px + var(--p)*3px);
+    background: linear-gradient(180deg, transparent, var(--red));
+    border-radius: 4px;
+}
+/* Variaciones de altura para cada hilo */
+.th:nth-child(1) { height: 100%; }
+.th:nth-child(2) { height: 88%; }
+.th:nth-child(3) { height: 95%; }
+
+.th::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 16px 5px rgba(224,58,82,.7);
+}
+        :root {
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.6);
+            --glass-bg: rgba(25, 25, 35, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #050508;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- ESTILOS DE LA PANTALLA DE INICIO --- */
+        #start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            background-color: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            transition: opacity 1.5s ease, visibility 1.5s;
+        }
+
+        .number-btn {
+            font-size: 10rem;
+            font-family: 'Playfair Display', serif;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--gold);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.5s ease;
+            animation: pulse-glow 2s infinite alternate;
+            background: none;
+            border: none;
+            outline: none;
+        }
+
+        .number-btn:hover {
+            color: var(--gold);
+            text-shadow: 0 0 30px var(--gold), 0 0 50px var(--gold);
+            transform: scale(1.1);
+        }
+
+        .start-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            margin-top: 20px;
+            color: #aaa;
+            text-transform: uppercase;
+            animation: fade-in-out 3s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+            100% { text-shadow: 0 0 30px rgba(212, 175, 55, 0.8), 0 0 60px rgba(212, 175, 55, 0.4); }
+        }
+
+        @keyframes fade-in-out {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Ocultar el contenido principal hasta hacer clic */
+        #main-wrapper {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(30px);
+            transition: all 2s ease;
+        }
+
+        #main-wrapper.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* --- EFECTO DE 3 HILOS FIJOS CON SCROLL --- */
+        #threads-fixed {
+            position: fixed;
+            left: 15px;
+            top: 0;
+            z-index: 50; /* Por encima del contenido pero debajo de la pantalla de inicio */
+            height: calc(var(--scroll-p, 0) * 100vh);
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 2s ease;
+        }
+
+        #threads-fixed.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .th-line {
+            position: relative;
+            width: calc(2px + var(--scroll-p, 0) * 2px);
+            background: linear-gradient(180deg, transparent, var(--gold));
+            border-radius: 4px;
+        }
+
+        .th-line:nth-child(1) { height: 100%; }
+        .th-line:nth-child(2) { height: 85%; }
+        .th-line:nth-child(3) { height: 95%; }
+
+        .th-line::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            margin-left: -5px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 15px 5px var(--gold-glow);
+        }
+
+        /* --- ESTILOS DEL CONTENIDO PRINCIPAL --- */
+        h1, h2, h3, .font-serif-title {
+            font-family: 'Cinzel', serif;
+        }
+
+        .font-poetic {
+            font-family: 'Playfair Display', serif;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #050508 100%);
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 var(--gold-glow);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+
+        .text-glow { text-shadow: 0 0 15px var(--gold-glow); }
+        .text-glow-white { text-shadow: 0 0 15px rgba(255,255,255,0.4); }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hilos colgantes decorativos de la sección final */
+        .thread {
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--gold));
+            position: relative;
+            opacity: 0.8;
+        }
+        .thread::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 15px 5px var(--gold-glow);
+        }
+        .thread-1 { height: 80px; animation: float 4s ease-in-out infinite; }
+        .thread-2 { height: 130px; animation: float 5s ease-in-out infinite reverse; }
+        .thread-3 { height: 100px; animation: float 4.5s ease-in-out infinite; }
+
+        .delay-1 { animation-delay: 0.5s; }
+        .delay-2 { animation-delay: 1s; }
+        .delay-3 { animation-delay: 1.5s; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050508; }
+        ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+    </style>
+
+    
+</head>
+<body class="antialiased">
+
+    <!-- Fondo de estrellas interactivo -->
+    <canvas id="starfield"></canvas>
+
+    <!-- PANTALLA DE INICIO -->
+    <div id="start-screen">
+        <button class="number-btn" id="open-btn">6</button>
+        <p class="start-text">Presiona para abrir, mi princesa</p>
+    </div>
+
+    <!-- AUDIO -->
+    <audio id="bg-music" loop>
+        <source src="musica/luz.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- HILOS LATERALES DINÁMICOS CON SCROLL -->
+    <div id="threads-fixed">
+        <div class="th-line"></div>
+        <div class="th-line"></div>
+        <div class="th-line"></div>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div id="main-wrapper">
+
+        <!-- SECCIÓN 1: HÉROE -->
+        <section class="min-h-screen flex flex-col items-center justify-center text-center px-4 relative z-10">
+            <div class="floating">
+                <i class="fas fa-moon text-5xl md:text-7xl text-[#d4af37] mb-6 drop-shadow-[0_0_15px_rgba(212,175,55,0.8)]"></i>
+            </div>
+            <h3 class="text-[#d4af37] tracking-[0.3em] uppercase text-sm md:text-lg mb-4 fade-in-up">Felices 6 Meses</h3>
+            <h1 class="text-4xl md:text-7xl font-bold mb-6 text-glow-white fade-in-up delay-1">Nuestro Universo</h1>
+            <p class="font-poetic text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto italic fade-in-up delay-2 leading-relaxed">
+                "Donde el sol y la luna se encuentran para iluminarse mutuamente, sin importar la tormenta."
+            </p>
+            <a href="#memorias" class="mt-12 text-[#d4af37] text-3xl animate-bounce fade-in-up delay-3 cursor-pointer">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </section>
+
+        <!-- SECCIÓN 2: RENACER CONTIGO -->
+        <section id="memorias" class="py-20 px-4 relative z-10">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-5xl text-center text-[#d4af37] mb-16 text-glow">Renacer Contigo</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass-panel p-8 flex flex-col items-center text-center hover:scale-105 transition-transform duration-500">
+                        <div class="w-16 h-16 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center mb-6">
+                            <i class="fas fa-running text-2xl text-[#d4af37]"></i>
+                        </div>
+                        <h3 class="text-xl text-[#d4af37] mb-4">Aquel rescate en la noche</h3>
+                        <p class="font-poetic text-gray-300 text-lg leading-relaxed italic">
+                            "Seis lunas girando en nuestro propio cielo,<br>
+                            seis meses de abrigo, de locura y de luz.<br>
+                            Corrí tras tu vincha rompiendo el desvelo,<br>
+                            sabiendo que mi único norte eres tú."
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-8 flex flex-col items-center text-center hover:scale-105 transition-transform duration-500">
+                        <div class="w-16 h-16 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center mb-6">
+                            <i class="fas fa-star-and-crescent text-2xl text-[#d4af37]"></i>
+                        </div>
+                        <h3 class="text-xl text-[#d4af37] mb-4">Nuestro Símbolo</h3>
+                        <p class="font-poetic text-gray-300 text-lg leading-relaxed italic">
+                            "Aún llevas al pecho nuestra estrella y luna,<br>
+                            brillando en el oro de un pacto eternal.<br>
+                            Dos astros distintos que el cielo hoy aúna,<br>
+                            destinados a amarse en un baile inmortal."
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-8 flex flex-col items-center text-center hover:scale-105 transition-transform duration-500">
+                        <div class="w-16 h-16 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center mb-6">
+                            <i class="fas fa-bus text-2xl text-[#d4af37]"></i>
+                        </div>
+                        <h3 class="text-xl text-[#d4af37] mb-4">El Refugio de tu Sueño</h3>
+                        <p class="font-poetic text-gray-300 text-lg leading-relaxed italic">
+                            "Cuando el ruido del mundo de pronto se apaga,<br>
+                            y sobre mi hombro te entregas a la paz,<br>
+                            descubro que mi alma se vuelve tu cuna,<br>
+                            el lugar más seguro en el que dormirás."
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-8 flex flex-col items-center text-center hover:scale-105 transition-transform duration-500">
+                        <div class="w-16 h-16 rounded-full bg-[rgba(212,175,55,0.1)] flex items-center justify-center mb-6">
+                            <i class="fas fa-spa text-2xl text-[#d4af37]"></i>
+                        </div>
+                        <h3 class="text-xl text-[#d4af37] mb-4">Más hermosa que la naturaleza</h3>
+                        <p class="font-poetic text-gray-300 text-lg leading-relaxed italic">
+                            "Ninguna flor rosa que adorne tu oreja<br>
+                            se iguala al paisaje sagrado de tu existir.<br>
+                            La naturaleza entera se rinde y se aleja,<br>
+                            porque ante tu luz, solo queda admirar."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: LA CARTA -->
+        <section class="py-20 px-4 relative z-10">
+            <div class="max-w-4xl mx-auto glass-panel p-8 md:p-16 relative overflow-hidden">
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[80%] h-1 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent opacity-50"></div>
+
+                <h2 class="text-3xl md:text-5xl text-center text-[#d4af37] mb-10 text-glow">A pesar de la tormenta...</h2>
+
+                <div class="font-poetic text-gray-200 text-lg md:text-xl leading-loose space-y-6">
+                    <p>Mi hermosa Nicoll, dueña de mi caos y de mi paz...</p>
+
+                    <p>
+                        Sé perfectamente que las últimas lunas han traído vientos helados. Nuestras palabras han chocado como olas furiosas, y el cansancio nos ha hecho creer, a ratos, que caminábamos sobre un frágil hilo a punto de romperse. Pero un hilo que se teje con amor verdadero no se corta, mi princesa; en medio de la tormenta, se vuelve de acero.
+                    </p>
+
+                    <p>
+                        A esta prueba se sumó un dolor silencioso y profundo, una tormenta impensable que sacudió nuestro universo. Tuvimos que devolver un pequeño destello al cielo, y sé que hoy tu cuerpo y tu alma están cargando con un peso inmenso. Si tus alas pesan, yo te cargo; si tu salud flaquea, yo soy tu escudo. No te dejaré sola ni un solo milímetro, porque tú eres el único lugar en este mundo al que quiero pertenecer.
+                    </p>
+
+                    <p class="text-[#d4af37] font-bold italic text-glow">
+                        Quiero que cierres esos inmensos ojitos de búho y escuches a tu corazón: te amo con una fuerza que sobrepasa cualquier adversidad.
+                    </p>
+
+                    <p>
+                        Confía en nosotros, mi luna. Yo soy Frank, el hombre que jamás soltará tu mano, ni en la noche más oscura. Tú no eres solo mi presente; eres mi mujer, mi futura esposa, la raíz de nuestra familia y la madre de los sueños que aún vamos a construir. Ningún tropiezo, ninguna herida ni ningún golpe de la vida tiene el poder de borrar el hermoso destino que Dios ya escribió para los dos.
+                    </p>
+
+                    <p>
+                        Esta prueba tan amarga es solo un invierno pasajero. Falta muy poco para llegar a la cima de esta montaña empinada, y te juro que al cruzarla, nos espera la primavera. Volveremos a reír hasta quedarnos sin aire, volveremos a bailar sin música y a soñar sin límites.
+                    </p>
+
+                    <p class="text-center text-2xl text-[#d4af37] mt-8 mb-4">
+                        ¡Fuerza y valor, mi chiquita!
+                    </p>
+
+                    <p class="text-center">
+                        La recompensa de no habernos rendido jamás será un amor inquebrantable, una vida entera de amaneceres juntos. Te amo hoy, mañana y por toda la eternidad.
+                    </p>
+
+                    <p class="text-right mt-10 text-[#d4af37] font-bold text-2xl font-serif-title">
+                        Contigo siempre, tu Frank 🤍
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: EL POEMA -->
+        <section class="py-24 px-4 relative z-10 flex flex-col items-center">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl md:text-5xl text-[#d4af37] mb-12 text-glow">Renacer Contigo</h2>
+
+                <p class="floating" style="animation-delay: 0s;">
+                    En el abismo dulce de tus ojos de búho,<br>
+                    encontré el universo que siempre había soñado.<br>
+                    Seis lunas han pasado desde el primer suspiro,<br>
+                    y el tiempo se hace eterno si te tengo a mi lado.
+                </p>
+
+                <p class="floating mt-8" style="animation-delay: 1s;">
+                    Tú eres la luna intacta que alumbra mis rincones,<br>
+                    yo soy el sol que busca cuidar tu madrugada.<br>
+                    Nacimos diferentes, con dos constelaciones,<br>
+                    que encajan de manera perfecta y delicada.
+                </p>
+
+                <p class="floating mt-8" style="animation-delay: 2s;">
+                    Tu piel color canela, tu sonrisa infinita,<br>
+                    desarman en un soplo mi caos y mis miedos.<br>
+                    Eres tú mi refugio, mi magia favorita,<br>
+                    el cielo más hermoso que tocan hoy mis dedos.
+                </p>
+
+                <p class="floating mt-8" style="animation-delay: 3s;">
+                    No hay duda en mi camino, mi brújula es tu pecho,<br>
+                    mi única certeza es quererte hacer feliz.<br>
+                    Contigo quiero todo, el alma y bajo el techo,<br>
+                    pues tú eres, mi princesa, mi más bella raíz.
+                </p>
+
+                <p class="floating mt-8 text-[#d4af37] font-semibold text-glow" style="animation-delay: 4s;">
+                    Te elijo hoy y siempre, mi luz, mi compañera,<br>
+                    la futura esposa de toda mi ilusión.<br>
+                    Que pasen mil inviernos y mil primaveras,<br>
+                    que tú ya eres la dueña de todo mi corazón.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: DESPEDIDA Y LOS 3 HILOS DECORATIVOS -->
+        <section class="py-16 px-4 relative z-10 flex flex-col items-center justify-center">
+
+            <!-- Efecto de los 3 Hilos Decorativos -->
+            <div class="flex space-x-12 mb-16">
+                <div class="thread thread-1"></div>
+                <div class="thread thread-2"></div>
+                <div class="thread thread-3"></div>
+            </div>
+
+            <!-- Textos Finales -->
+            <h1 class="font-serif-title text-5xl md:text-8xl font-bold text-[#d4af37] text-glow-white mb-6 text-center">
+                Feliz 6 Meses
+            </h1>
+            <p class="font-poetic text-2xl md:text-4xl text-gray-200 italic mb-12">
+                En la noche nos vemos 🤍
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-8 text-center text-gray-500 text-sm border-t border-[rgba(255,255,255,0.05)] relative z-10">
+            <p>Hecho con toda mi alma para mi Ojos de Búho. Feliz medio año, amor mío. 🦉🤍</p>
+        </footer>
+
+    </div> <!-- FIN DEL CONTENEDOR PRINCIPAL -->
+
+    <!-- SCRIPTS -->
+    <script>
+        // Funcionalidad de apertura y cálculo del scroll
+        document.getElementById('open-btn').addEventListener('click', function() {
+            var music = document.getElementById('bg-music');
+            music.volume = 0.5;
+            music.play().catch(e => console.log("Interacción de audio requerida: ", e));
+
+            var startScreen = document.getElementById('start-screen');
+            startScreen.style.opacity = '0';
+
+            setTimeout(function() {
+                startScreen.style.display = 'none';
+                document.getElementById('main-wrapper').classList.add('visible');
+                // Mostrar también los hilos dinámicos de la izquierda
+                document.getElementById('threads-fixed').classList.add('visible');
+                updateScroll(); // Inicializar el scroll
+            }, 1500); 
+        });
+
+        // Función para actualizar la variable CSS de scroll (--scroll-p)
+        function updateScroll() {
+            let scrollTop = window.scrollY || document.documentElement.scrollTop;
+            let docHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
+            let scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
+            document.documentElement.style.setProperty('--scroll-p', scrollPercent);
+        }
+
+        window.addEventListener('scroll', updateScroll);
+        window.addEventListener('resize', updateScroll);
+
+        // Funcionalidad del fondo de estrellas
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let stars = [];
+        const numStars = 400;
+
+        function initStars() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 1.5,
+                    vx: Math.floor(Math.random() * 50) - 25,
+                    vy: Math.floor(Math.random() * 50) - 25,
+                    alpha: Math.random(),
+                    pulse: Math.random() * 0.02 + 0.005
+                });
+            }
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < stars.length; i++) {
+                let s = stars[i];
+                s.alpha += s.pulse;
+                if(s.alpha > 1 || s.alpha < 0) s.pulse = -s.pulse;
+
+                s.y += s.vy * 0.002;
+                s.x += s.vx * 0.002;
+
+                if (s.y < 0) s.y = height;
+                if (s.y > height) s.y = 0;
+                if (s.x < 0) s.x = width;
+                if (s.x > width) s.x = 0;
+
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.radius, 0, 2 * Math.PI);
+
+                if (i % 4 === 0) {
+                    ctx.fillStyle = `rgba(212, 175, 55, ${s.alpha})`;
+                } else {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+                }
+                ctx.fill();
+            }
+            requestAnimationFrame(drawStars);
+        }
+
+        window.addEventListener('resize', initStars);
+
+        window.onload = function() {
+            initStars();
+            drawStars();
+        };
+    </script>
+</body>
+</html>
